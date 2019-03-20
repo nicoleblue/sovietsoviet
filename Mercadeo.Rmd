@@ -1,0 +1,161 @@
+---
+title: SovietSoviet
+output: 
+  flexdashboard::flex_dashboard:
+    logo: log.png
+    theme: journal
+    orientation: rows
+    vertical_layout: fill
+    css: nicole.css
+---
+
+
+```{r include=FALSE}
+library(knitr)
+library(readxl)
+library(plotly)
+library(quantmod)
+library(htmltools)
+library(flexdashboard)
+library(tidyverse)
+library(dplyr)
+library(DT)
+```
+
+
+```{r include=FALSE}
+html_dependency_font_awesome <- function() {
+  htmlDependency(
+    "font-awesome",
+    "5.1.0",
+    src = rmarkdown_system_file("rmd/h/fontawesome"),
+    stylesheet = c(
+      "css/all.css",
+      "css/v4-shims.css")
+  )
+}
+```
+
+
+```{r global, include=FALSE}
+Base<- read_excel("Base Santiago Soviet Soviet.xlsx", 
+    col_types = c("date", "numeric", "skip", 
+        "skip"))
+
+chart <- read_excel("chart.xlsx")
+```
+
+Sidebar {.sidebar}
+=====================================
+Aquí se escribe información
+
+
+Cifras Santiago {data-icon="fa-volume-up" .bgred} 
+======================================
+  
+  
+Row {data-height=550}
+--------------------------------------
+  
+### <i class="fab fa-spotify"></i> <b>Spotify Listeners in Santiago</b> 
+```{r include=FALSE}
+v <- gsub(x=Base$DateTime,pattern=" 20:00:00",replacement="",fixed=T)
+v <- gsub(x=v,pattern=" 21:00:00",replacement="",fixed=T)
+
+
+Base <- data.frame(Date=v, Listeners=Base$Santiago) 
+Base$Date<- as.Date(Base$Date)
+```
+  
+
+
+```{r echo=FALSE, fig.height=0.5, fig.width=2}
+
+plot_ly(Base, x = ~Date, text = ~paste("<b>Date:</b> ", Date, "<br><b>Santiago:</b> ", Listeners), 
+        hoverinfo = 'text') %>%
+  add_lines(y = ~Listeners, name = "Listeners", line = list(color = 'rgb(19,135,171)', width = 2)) %>% 
+  layout(
+    title = "Listeners in Santiago, CL",
+    xaxis = list(
+      rangeselector = list(
+        buttons = list(
+          list(
+            count = 3,
+            label = "3 mo",
+            step = "month",
+            stepmode = "backward"),
+          list(
+            count = 6,
+            label = "6 mo",
+            step = "month",
+            stepmode = "backward"),
+          list(
+            count = 1,
+            label = "1 yr",
+            step = "year",
+            stepmode = "backward"),
+          list(
+            count = 1,
+            label = "YTD",
+            step = "year",
+            stepmode = "todate"),
+          list(step = "all"))),
+      
+      rangeslider = list(type = "Date")),
+    yaxis = list(title = "Listeners"))
+
+
+```
+
+
+
+
+Row {data-height=450}
+--------------------------------------
+
+
+### SPOTIFY TOP CITIES BY LISTENERS
+
+```{r include=FALSE}
+
+chart <- data.frame(paises= chart$Category, serie=chart$`Series 1`)
+
+colors <- c('rgb(197, 195, 201)', 'rgb(81, 124, 181)', 'rgb(197, 195, 201)', 'rgb(197, 195, 201)', 'rgb(197, 195, 201)', 'rgb(197, 195, 201)')
+
+```
+
+
+```{r echo=FALSE}
+plot_ly(chart, labels = ~paises, values = ~serie, type = 'pie',
+        textposition = 'inside',
+        textinfo = 'label+percent',
+        insidetextfont = list(color = '#FFFFFF'),
+        hoverinfo = 'text',
+        text = ~paste(serie, ' Listeners'),
+        marker = list(colors = colors,
+                      line = list(color = '#FFFFFF', width = 1)),
+                      #The 'pull' attribute can also be used to create space between the sectors
+        showlegend = FALSE) %>%
+  layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+```
+
+
+
+
+### Followers
+
+```{r}
+articles <- 1098 
+valueBox(1089, caption = "Followers", icon = "fa-users", color = "default")
+```
+
+
+
+Otra Info {data-icon="fa-music"}
+======================================    
+  
+
+
+
+  

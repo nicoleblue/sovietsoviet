@@ -1,0 +1,52 @@
+
+.navbar {
+   background-color:black !important;
+   border-color:white !important;
+},
+.navbar-brand {
+   color:white !important;
+}
+
+.navbar-default .navbar-brand {
+   color: white !important;
+}
+.tab-panel { 
+   background-color: black; 
+   color: white
+}
+
+
+.navbar-nav li a:hover, .navbar-nav > .active > a {
+color: #fff !important;
+
+background-color:#b5b3b3 !important;
+background-image: none !important;
+}
+
+
+.navbar li a.link, 
+.navbar li a.visited {
+  background-color:  !important;
+  border: 1px;
+}
+
+
+
+.navbar .nav-pills>li>a {
+     color: #ffffff;
+ }
+
+
+}
+
+.bgred {
+  background-color: white;
+}
+
+.section.sidebar {
+  top: 61px;
+  border-bottom: 10px solid #ececec;
+  border-left: 10px solid #ececec;
+  background-color: rgba(255, 255, 255, 1);
+  right:1080px;
+}
